@@ -1,22 +1,29 @@
 import { useState } from 'react'
+import {BrowserRouter, Route, Routes, useNavigate, useParams} from 'react-router-dom'
 import './TodoApp.css'
 
 export default function TodoApp() {
   return (
     <div className="TodoApp">
       To Do Management Application
-      <LoginComponent />
-      {/* <WelcomeComponent /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path='' element={<LoginComponent />}></Route>
+          <Route path='/login' element={<LoginComponent />}></Route>
+          <Route path='/welcome/:username' element={<WelcomeComponent />}></Route>
+          <Route path='*' element={<ErrorComponent />}></Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }
 
 function LoginComponent() {
-
   const [username, setUsername] = useState('ioana')
   const [password, setPassword] = useState('password')
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
   const [showErrorMessage, setShowErrorMessage] = useState(false)
+  const navigate = useNavigate()
 
   function handleUSernameChange(event) {
     setUsername(event.target.value)
@@ -30,32 +37,19 @@ function LoginComponent() {
     if(username==='ioana' && password==='password') {
       setShowSuccessMessage(true)
       setShowErrorMessage(false)
+      navigate(`/welcome/${username}`)
     } else {
       setShowSuccessMessage(false)
       setShowErrorMessage(true)
     }
   }
 
-  function SuccessMessageComponent() {
-      if(showSuccessMessage) {
-        return <div className="successMessage">Authenticated Successfully</div>
-      }
-
-      return null
-  }
-
-  function ErrorMessageComponent() {
-    if(showErrorMessage) {
-      return <div className="errorMessage">Autehntication Failed. Please check your credentials.</div>
-    }
-
-    return null
-}
-
+<div className="errorMessage">Autehntication Failed. Please check your credentials.</div>
   return (
     <div className="Login">
-      <SuccessMessageComponent />
-      <ErrorMessageComponent />
+      <h1>Login</h1>
+      {showSuccessMessage && <div className="successMessage">Authenticated Successfully</div>}
+      {showErrorMessage && <div className="errorMessage">Autehntication Failed. Please check your credentials.</div>}
       <div className="LoginForm">
         <div>
           <label>Username</label>
@@ -76,9 +70,25 @@ function LoginComponent() {
 }
 
 function WelcomeComponent() {
+  const {username} = useParams()
+
   return (
-    <div className="Welcome">
+    <div className="WelcomeComponent">
+      <h1>Welcome {username}</h1>
+      <div>
         Welcome Component
+      </div>
+    </div>
+  )
+}
+
+function ErrorComponent() {
+  return (
+    <div className="ErrorComponent">
+      <h1>We are working really hard!</h1>
+      <div>
+        Apologies for the 404. Reach out to out team.
+      </div>
     </div>
   )
 }
