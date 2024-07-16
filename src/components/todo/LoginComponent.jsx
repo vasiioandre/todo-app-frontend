@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import {useNavigate} from 'react-router-dom'
+import { useAuth } from './security/AuthContext'
 
 export default function LoginComponent() {
   const [username, setUsername] = useState('ioana')
@@ -7,6 +8,7 @@ export default function LoginComponent() {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
   const [showErrorMessage, setShowErrorMessage] = useState(false)
   const navigate = useNavigate()
+  const authContext = useAuth()
 
   function handleUSernameChange(event) {
     setUsername(event.target.value)
@@ -18,10 +20,12 @@ export default function LoginComponent() {
 
   function handleSubmit() {
     if(username==='ioana' && password==='password') {
+      authContext.setAuthenticated(true)
       setShowSuccessMessage(true)
       setShowErrorMessage(false)
       navigate(`/welcome/${username}`)
     } else {
+      authContext.setAuthenticated(false)
       setShowSuccessMessage(false)
       setShowErrorMessage(true)
     }
