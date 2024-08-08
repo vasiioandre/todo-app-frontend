@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { deleteTodoApi, retrieveAllTodosForUsernameApi } from "./api/TodoApiService"
 import { useAuth } from "./security/AuthContext"
+import { useNavigate } from "react-router-dom"
 
 export default function ListTodosComponent() {
   const [todos, setTodos] = useState([])
@@ -8,6 +9,8 @@ export default function ListTodosComponent() {
 
   const AuthContext = useAuth()
   const username = AuthContext.username
+
+  const navigate = useNavigate()
 
   useEffect (
     () => refreshTodos(), []
@@ -25,11 +28,16 @@ export default function ListTodosComponent() {
     deleteTodoApi(username, id)
       .then(
         () => {
-          setMessage(`Delete of To Do with id:${id} succesful`)
+          setMessage(`Delete of To Do with id:${id} successful`)
           refreshTodos()
         }
       )
       .catch(error => console.log(error))
+  }
+
+  function updateTodo(id) {
+    console.log('clicked ' + id)
+    navigate(`/todo/${id}`)
   }
 
   return (
@@ -44,6 +52,7 @@ export default function ListTodosComponent() {
               <th>IS DONE?</th>
               <th>TARGET DATE</th>
               <th>DELETE</th>
+              <th>UPDATE</th>
             </tr>
           </thead>
           <tbody>
@@ -56,6 +65,8 @@ export default function ListTodosComponent() {
                     <td>{todo.targetDate.toString()}</td>
                     <td><button className="btn btn-warning"
                       onClick={() => deleteTodo(todo.id)}>Delete</button></td>
+                    <td><button className="btn btn-success"
+                      onClick={() => updateTodo(todo.id)}>Update</button></td>
                   </tr>
                 )
               )
