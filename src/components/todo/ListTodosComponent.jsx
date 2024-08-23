@@ -36,7 +36,6 @@ export default function ListTodosComponent() {
   }
 
   function updateTodo(id) {
-    console.log('clicked ' + id)
     navigate(`/todo/${id}`)
   }
 
