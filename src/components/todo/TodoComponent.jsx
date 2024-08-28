@@ -34,7 +34,6 @@ export default function TodoComponent() {
   }
 
   function onSubmit(values) {
-    console.log(values)
     const todo = {
       id: id,
       username: username,
@@ -61,7 +60,7 @@ export default function TodoComponent() {
     let errors = {
     }
 
-    if(values.description.length<5) {
+    if(values.description.length < 5) {
       errors.description = 'Enter at least 5 characters'
     }
 
@@ -69,7 +68,6 @@ export default function TodoComponent() {
       errors.targetDate = 'Enter a target date'
     }
 
-    console.log(values)
     return errors
   }
 
