@@ -28,7 +28,7 @@ export default function LoginComponent() {
   return (
     <div className="Login">
       <h1>Login</h1>
-      {showErrorMessage && <div className="errorMessage">Autehntication Failed. Please check your credentials.</div>}
+      {showErrorMessage && <div className="errorMessage">Authentication Failed. Please check your credentials.</div>}
       <div className="LoginForm">
         <div>
           <label>Username</label>
